@@ -1,0 +1,72 @@
+div, p, body, main, span, h2, h4, a {
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+ul {
+  list-style: none;
+}
+
+#player {
+  width: 50%;
+  float: left;
+}
+
+ul.controls {
+  float: left;
+  display: block;
+  margin: auto;
+  width: 90%;
+}
+
+ul.controls li {
+  float: left;
+  margin-left: 10px;
+  display: block;
+  width: 30%;
+}
+
+.controls a {
+  width: 50px;
+  height: 50px;
+  display: block;
+}
+
+.controls a.backward {
+  background: url('images/skip.png') no-repeat;
+}
+
+.controls a.play {
+  background: url('images/play.png') no-repeat;
+}
+.controls a.play.pause {
+  background: url('images/pause.png') no-repeat;
+}
+
+.controls a.forward {
+  background: url('images/skip.png') no-repeat;
+}
+
+#playlist {
+  width: 60%;
+  border: 4px solid #eee;
+  margin: 25px;
+  padding: 30px;
+  overflow: scroll;
+  min-height: 400px;
+}
+
+#playlist li.current {
+  color: #3ff;
+}
+
+#playlist li.current.pause {
+  color: #3bb;
+}
+
+#library {
+  width: 50%;
+  float: right;
+}
