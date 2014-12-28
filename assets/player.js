@@ -96,6 +96,7 @@
     if (currentIndex === parseInt(index)) {
       this.resetTrack(index);
       this.getCurrentSong().pause();
+      this.currentSong = null;
     }
     this.list.splice(index, 1)
     this.render();
@@ -106,7 +107,7 @@
   };
 
   musicPlayer.prototype.resetTrack = function (index) {
-    this.list[0].currentTime = 0;
+    this.list[index].currentTime = 0;
   };
 
   musicPlayer.prototype.render = function() {
@@ -159,7 +160,11 @@
 
   $('#add-song').on("click", "a", function(event){
     event.preventDefault();
-    player.addSong($('#new-song').val());
+    var newSong = $('<audio title="' + $('#new-title').val() + '" '+
+    'src="' + $('#new-source').val() + '" ' + '">')
+    $('#library').append(newSong)
+    console.log(newSong)
+    player.addSong(newSong[0]);
     player.render();
   });
 
@@ -183,7 +188,7 @@
 
   $('#playlist').on('click', 'a.remove', function(event){
     var selectedTrack = $(event.currentTarget).next().attr('number');
-    player.removeTrack(selectedTrack)
+    player.removeTrack(selectedTrack);
   });
 
   $('#library').on('click', "a.track", function (event) {
