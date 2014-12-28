@@ -114,6 +114,7 @@
     var playlistCon = $('#playlist>ul');
     playlistCon.empty();
     var currentSong = player.getCurrentSong();
+    var self = this;
     for(var i=0; i < player.list.length; i++){
       var song = player.list[i];
       if (song === currentSong) {
@@ -128,6 +129,7 @@
       if (!player.playing) {
         $('li.track.current').addClass("pause")
       }
+
     }
   }
 
@@ -162,8 +164,7 @@
     event.preventDefault();
     var newSong = $('<audio title="' + $('#new-title').val() + '" '+
     'src="' + $('#new-source').val() + '" ' + '">')
-    $('#library').append(newSong)
-    console.log(newSong)
+    $('#library').append(newSong);
     player.addSong(newSong[0]);
     player.render();
   });
@@ -174,6 +175,27 @@
       var song = player.getCurrentSong();
       if (song) {
         song.currentTime = song.duration * progress / 100;
+      }
+    }
+  });
+
+  $('#playlist ul').sortable({
+    stop: function(event, ui) {
+      var sorted = false
+      while (!sorted) {
+        sorted = true;
+        var listItems = $('#playlist ul li');
+        for(var i=0; i< listItems.length; i++) {
+          var trackNumber = parseInt($(listItems[i]).attr("number"));
+          if( trackNumber !== i) {
+            sorted = false
+            var track = player.list[trackNumber];
+            player.list.splice(trackNumber, 1);
+            player.list.splice(i, 0, track);
+            player.render();
+            break;
+          }
+        }
       }
     }
   });
@@ -196,4 +218,5 @@
     player.addSong(track[0])
     player.render();
   });
+
 });
