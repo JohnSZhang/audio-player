@@ -83,6 +83,7 @@
   musicPlayer.prototype.setCurrentSong = function (index) {
     this.currentSong = this.list[index]
   };
+
   musicPlayer.prototype.setAndPlay = function (index) {
     this.pauseCurrent();
     this.setCurrentSong(index);
@@ -92,6 +93,10 @@
 
   musicPlayer.prototype.removeTrack = function (index) {
     var currentIndex = $.inArray(this.getCurrentSong(), this.list);
+    if (currentIndex === parseInt(index)) {
+      this.resetTrack(index);
+      this.getCurrentSong().pause();
+    }
     this.list.splice(index, 1)
     this.render();
   };
@@ -118,6 +123,9 @@
         playlistCon.append(' <a href="#" class="remove"> x </a> '
             + '<li class="track" number="'+ i
             + '">' + $(song).attr("title") + '</li>')
+      }
+      if (!player.playing) {
+        $('li.track.current').addClass("pause")
       }
     }
   }
@@ -167,13 +175,14 @@
 
   $('#playlist').on('click', 'li.track', function(event){
     var selectedTrack = $(event.currentTarget).attr('number');
+    if (!player.playing) {
+      $('a.play').toggleClass("pause")
+    }
     player.setAndPlay(selectedTrack)
   });
 
   $('#playlist').on('click', 'a.remove', function(event){
-    console.log()
     var selectedTrack = $(event.currentTarget).next().attr('number');
-    console.log(selectedTrack)
     player.removeTrack(selectedTrack)
   });
 

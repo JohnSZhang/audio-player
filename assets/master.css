@@ -28,6 +28,10 @@ h2 {
   font-size: 45px;
 }
 
+h4 {
+  font-size: 20px;
+}
+
 #player {
   width: 45%;
   float: left;
