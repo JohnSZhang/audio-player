@@ -13,7 +13,10 @@
 
   musicPlayer.prototype.play = function () {
     var song = this.getCurrentSong();
-    if(!this.playing) {
+    if (!song) {
+      console.log("you do not have any songs in your play list!")
+    }
+    else if(!this.playing) {
       this.playing = true
       song.play();
     } else {
@@ -21,7 +24,6 @@
       song.pause();
     }
     this.updateStatus();
-
   };
   musicPlayer.prototype.updateStatus = function () {
     var self = this;
@@ -90,13 +92,8 @@
 
   musicPlayer.prototype.removeTrack = function (index) {
     var currentIndex = $.inArray(this.getCurrentSong(), this.list);
-    console.log(currentIndex)
-    if (currentIndex !== index) {
-      this.list.splice(index, 1)
-      this.render();
-    } else {
-      console.log('cannot remove currently playing track');
-    }
+    this.list.splice(index, 1)
+    this.render();
   };
 
   musicPlayer.prototype.isDuplicate = function (song) {
