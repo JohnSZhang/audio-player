@@ -20,11 +20,28 @@
       this.playing = false
       song.pause();
     }
+    this.updateStatus();
+
+  };
+  musicPlayer.prototype.updateStatus = function () {
+    var self = this;
+    var song = this.getCurrentSong();
+    var progress = Math.floor(song.currentTime / song.duration * 100);
+    $('#status span').css("left", progress + "%")
+    if (progress === 100 ) {
+      this.forward();
+    }
+    if(this.playing) {
+      window.setTimeout(function(){
+        self.updateStatus();
+      }, 500);
+    }
   };
 
   musicPlayer.prototype.forward = function () {
     this.pauseCurrent();
     var currentIndex = $.inArray(this.getCurrentSong(), this.list);
+    this.resetTrack(currentIndex);
     if(currentIndex === this.list.length - 1) {
       this.setCurrentSong(0);
     } else {
@@ -37,6 +54,7 @@
   musicPlayer.prototype.backward = function () {
     this.pauseCurrent();
     var currentIndex = $.inArray(this.getCurrentSong(), this.list);
+    this.resetTrack(currentIndex);
     if(currentIndex === 0) {
       this.setCurrentSong(this.list.length - 1);
     } else {
@@ -63,9 +81,30 @@
   musicPlayer.prototype.setCurrentSong = function (index) {
     this.currentSong = this.list[index]
   };
+  musicPlayer.prototype.setAndPlay = function (index) {
+    this.pauseCurrent();
+    this.setCurrentSong(index);
+    this.play();
+    this.render();
+  }
+
+  musicPlayer.prototype.removeTrack = function (index) {
+    var currentIndex = $.inArray(this.getCurrentSong(), this.list);
+    console.log(currentIndex)
+    if (currentIndex !== index) {
+      this.list.splice(index, 1)
+      this.render();
+    } else {
+      console.log('cannot remove currently playing track');
+    }
+  };
 
   musicPlayer.prototype.isDuplicate = function (song) {
     return ($.inArray(song, this.list) === -1)
+  };
+
+  musicPlayer.prototype.resetTrack = function (index) {
+    this.list[0].currentTime = 0;
   };
 
   musicPlayer.prototype.render = function() {
@@ -75,9 +114,13 @@
     for(var i=0; i < player.list.length; i++){
       var song = player.list[i];
       if (song === currentSong) {
-        playlistCon.append('<li class="current">' + $(song).attr('title') + '</li>')
+        playlistCon.append('<a href="#" class="remove">x</a>'
+            + '<li class="track current" number="' + i
+            +'">' + $(song).attr('title') + '</li>')
       } else {
-        playlistCon.append('<li>' + $(song).attr("title") + '</li>')
+        playlistCon.append(' <a href="#" class="remove"> x </a> '
+            + '<li class="track" number="'+ i
+            + '">' + $(song).attr("title") + '</li>')
       }
     }
   }
@@ -115,4 +158,31 @@
     player.render();
   });
 
+  $("#status").slider({
+    change: function( event, ui ) {
+      var progress = ui.value
+      var song = player.getCurrentSong();
+      if (song) {
+        song.currentTime = song.duration * progress / 100;
+      }
+    }
+  });
+
+  $('#playlist').on('click', 'li.track', function(event){
+    var selectedTrack = $(event.currentTarget).attr('number');
+    player.setAndPlay(selectedTrack)
+  });
+
+  $('#playlist').on('click', 'a.remove', function(event){
+    console.log()
+    var selectedTrack = $(event.currentTarget).next().attr('number');
+    console.log(selectedTrack)
+    player.removeTrack(selectedTrack)
+  });
+
+  $('#library').on('click', "a.track", function (event) {
+    var track = $(event.currentTarget).next();
+    player.addSong(track[0])
+    player.render();
+  });
 });

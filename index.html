@@ -2,18 +2,19 @@
   <head>
     <title>Music Player - John Zhang</title>
     <link rel="stylesheet" href="assets/master.css" media="screen" title="no title" charset="utf-8">
-    <script type="text/javascript" src="assets/jquery-2.1.3.min.js"> </script>
+  <script type="text/javascript" src="assets/jquery-2.1.3.min.js"> </script>
+    <script type="text/javascript" src="assets/jquery-ui.min.js"> </script>
     <script type="text/javascript" src="assets/player.js"> </script>
   </head>
   <body>
     <div id="player">
       <h2>Playlist</h2>
-      <ul class="controls">
+      <ul class="controls clear">
         <li><a href="#" class="backward"></a></li>
         <li><a href="#" class="play"></a></li>
         <li><a href="#" class="forward"></a></li>
       </ul>
-      <div id="song-status">
+      <div id="status">
       </div>
       <div id="playlist">
         <ul>
@@ -27,17 +28,17 @@
       <a href="#" class="add albumn">Add Albumn To Playlist</a>
       <ul>
         <li>
-          <a href="#">Stance Gives You Balance</a>
+          <a class="track" href="#">Stance Gives You Balance</a>
           <audio title="Stance Gives You Balance" src="assets/music/Stance_Gives_You_Balance.mp3">
           </audio>
         </li>
         <li>
-          <a href="#">Chantier Naval 412</a>
+          <a class="track" href="#">Chantier Naval 412</a>
           <audio title="Chantier Naval 412" src="assets/music/Chantiers_Navals_412.mp3">
           </audio>
           </li>
         <li>
-          <a href="#">Cylinder One</a>
+          <a class="track" href="#">Cylinder One</a>
           <audio title="Cylinder One" src="assets/music/Cylinder_One.mp3">
           </audio>
         </li>
@@ -46,16 +47,16 @@
       <a href="#" class="add albumn">Add Albumn To Playlist</a>
       <ul>
         <li>
-          <a href="#">DD Groove</a>
+          <a class="track" href="#">DD Groove</a>
           <audio title="DD Groove" src="assets/music/DD_Groove.mp3">
           </audio>
         <li>
-          <a href="#">Slow Burn</a>
+          <a class="track" href="#">Slow Burn</a>
           <audio title="Slow Burn" src="assets/music/Slow_burn.mp3">
           </audio>
         </li>
         <li>
-          <a href="#">Capulet</a>
+          <a class="track" href="#">Capulet</a>
           <audio title="Capulet" src="assets/music/Capulet.mp3">
           </audio>
         </li>
