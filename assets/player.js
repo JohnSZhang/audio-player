@@ -5,7 +5,7 @@
 
   musicPlayer.prototype.addSong = function (song) {
     if( !player.isDuplicate(song)) {
-      console.log( song + " is already in playlist");
+      console.log( $(song).attr('title') + " is already in playlist");
     } else {
       this.list.push(song)
     }
@@ -15,12 +15,15 @@
     var song = this.getCurrentSong();
     if(!this.playing) {
       this.playing = true
+      song.play();
     } else {
       this.playing = false
+      song.pause();
     }
   };
 
   musicPlayer.prototype.forward = function () {
+    this.pauseCurrent();
     var currentIndex = $.inArray(this.getCurrentSong(), this.list);
     if(currentIndex === this.list.length - 1) {
       this.setCurrentSong(0);
@@ -32,6 +35,7 @@
   };
 
   musicPlayer.prototype.backward = function () {
+    this.pauseCurrent();
     var currentIndex = $.inArray(this.getCurrentSong(), this.list);
     if(currentIndex === 0) {
       this.setCurrentSong(this.list.length - 1);
@@ -42,6 +46,13 @@
     this.render();
   };
 
+  musicPlayer.prototype.pauseCurrent = function () {
+    if(this.playing) {
+      this.playing = false;
+      this.getCurrentSong().pause();
+    }
+  };
+
   musicPlayer.prototype.getCurrentSong = function () {
     if(!this.currentSong){
       this.currentSong = this.list[0]
@@ -50,7 +61,6 @@
   };
 
   musicPlayer.prototype.setCurrentSong = function (index) {
-    console.log('setting currentSong to ' + index)
     this.currentSong = this.list[index]
   };
 
@@ -65,9 +75,9 @@
     for(var i=0; i < player.list.length; i++){
       var song = player.list[i];
       if (song === currentSong) {
-        playlistCon.append('<li class="current">' + player.list[i] + '</li>')
+        playlistCon.append('<li class="current">' + $(song).attr('title') + '</li>')
       } else {
-        playlistCon.append('<li>' + player.list[i] + '</li>')
+        playlistCon.append('<li>' + $(song).attr("title") + '</li>')
       }
     }
   }
@@ -77,7 +87,7 @@
   $('.add.albumn').on("click", function(event){
     var albumn = $(event.target).next().children();
     for( var i=0; i < albumn.length; i++) {
-      player.addSong($(albumn[i]).text());
+      player.addSong($(albumn[i]).children("audio")[0]);
     }
     player.render();
   });
