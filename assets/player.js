@@ -5,7 +5,7 @@
 
   musicPlayer.prototype.addSong = function (song) {
     if( !player.isDuplicate(song)) {
-      console.log( song + " is already in playlist");
+      console.log( $(song).attr('title') + " is already in playlist");
     } else {
       this.list.push(song)
     }
@@ -15,10 +15,10 @@
     var song = this.getCurrentSong();
     if(!this.playing) {
       this.playing = true
-      song[0].play();
+      song.play();
     } else {
       this.playing = false
-      song[0].pause();
+      song.pause();
     }
   };
 
@@ -49,7 +49,7 @@
   musicPlayer.prototype.pauseCurrent = function () {
     if(this.playing) {
       this.playing = false;
-      this.getCurrentSong()[0].pause();
+      this.getCurrentSong().pause();
     }
   };
 
@@ -87,7 +87,7 @@
   $('.add.albumn').on("click", function(event){
     var albumn = $(event.target).next().children();
     for( var i=0; i < albumn.length; i++) {
-      player.addSong($(albumn[i]).children("audio"));
+      player.addSong($(albumn[i]).children("audio")[0]);
     }
     player.render();
   });
